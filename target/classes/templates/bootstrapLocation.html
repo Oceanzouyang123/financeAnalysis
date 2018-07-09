@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insert title here</title>
+<!--link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"-->
+<link href="/css/bootstrap.min.css" rel="stylesheet" />
+<style type="text/css">    
+    body{
+      padding-top: 50px;
+    }    
+    .navbar-inverse{
+    	background-color: #373277;
+    } 
+    </style>
+</head>
+<body>
+	<div class="container">
+  <div class="jumbotron">
+    <h1>我的第一个 Bootstrap 页面</h1>
+    <p>重置窗口大小，查看响应式效果！</p> 
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <h3>第一列</h3>
+      <p>学的不仅是技术，更是梦想！</p>
+      <p>再牛逼的梦想,也抵不住你傻逼似的坚持！</p>
+    </div>
+    <div class="col-sm-4">
+      <h3>第二列</h3>
+      <p>学的不仅是技术，更是梦想！</p>
+      <p>再牛逼的梦想,也抵不住你傻逼似的坚持！</p>
+    </div>
+    <div class="col-sm-4">
+      <h3>第三列</h3>        
+      <p>学的不仅是技术，更是梦想！</p>
+      <p>再牛逼的梦想,也抵不住你傻逼似的坚持！</p>
+    </div>
+  </div>
+</div>
+	<br/>
+		<table>
+			<tr>
+				<td>姓名:</td>
+				<td>
+					<input class="name" type="text"></input>
+				</td>
+			</tr>
+			<tr>
+				<td>年龄:</td>
+				<td>
+					<input class="age" type="text"></input>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input class="sub" type="button" value="确认"></input>
+				</td>
+			</tr>
+		</table>
+		<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid"> 
+	<div class="navbar-header">
+		<a class="navbar-brand" href="#">导航测试</a>
+	</div>
+	<div>
+		<ul class="nav navbar-nav">
+			<li class="active"><a href="#">iOS</a></li>
+			<li><a href="#">SVN</a></li>
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					Java 
+					<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="#">jmeter</a></li>
+					<li><a href="#">EJB</a></li>
+					<li><a href="#">Jasper Report</a></li>
+					<li class="divider"></li>
+					<li><a href="#">分离的链接</a></li>
+					<li class="divider"></li>
+					<li><a href="#">另一个分离的链接</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	</div>
+</nav>
+		
+</body>
+<script src="/js/jquery-3.1.0.min.js"></script>
+<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- script src="js/bootstrap.min.js"></script-->
+<script type="text/javascript">
+	$(".sub").click(function(){
+		//alert($(".name").val());
+		console.log($(".age").val());
+		location.href="/bootstrapLocation";
+	});
+	$(function () { 
+		$("[data-toggle='popover']").popover();
+	});
+</script>
+</html>

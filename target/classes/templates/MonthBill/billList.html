@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title></title>
+<script th:src="@{/js/jquery-3.1.0.min.js}"></script>
+<style type="text/css"> 
+	body{
+		margin: 0px;
+		padding: 0px;
+	}
+    .navbar{
+    	background-color: grey; 	
+    } 
+    .panel-title{
+    	cursor: pointer;
+    }
+    .clear, .billquery,#btn,#file{
+    	background-color: rgba(157, 157, 157, 0.79);
+    	border: none;
+    	color: white;
+    	padding: 4px 15px;
+    	text-align: center;
+    	text-decoration: none;
+    	font-size: 16px;
+    	margin: 4px 2px;
+    	cursor: pointer;
+    	border-radius: 12px;
+	}
+</style>
+</head>
+<body>
+	<!-- 引入head页面 -->
+	<div th:include="MonthBill/head :: headContent"></div>
+	<div class="tab-content" style="margin-left: 20%;">
+		<form name="form1" action="give" method="post" enctype="multipart/form-data">
+			<table>
+				<tr>
+					<td>
+						<input class="input-prepend" type="file" name="file" id="file">
+					</td>
+					<td>
+						<input type="submit" id="btn" value="导入excel" onclick="return check()">
+					</td>
+					<td>
+						<label id="inserting"></label>
+					</td>
+					<td></td>
+					<td>
+						<input type="button" value="清除数据" class="clear"></input>
+					</td>
+				</tr>
+			</table>	
+ 		</form>
+	</div>
+	<div class="tab-content" style="margin-left: 20%;margin-top: 2%;">
+  		<p style="font-size: 30px;margin-left: 25%;margin-top: 10px;width: 200px;" id="billTitle">月结清单</p>
+  		<table style="width:60%;border-collapse:collapse;" border="1"  class="tableContent">
+  		</table>
+  		<!-- 月结算清单分页列表 -->
+  		<div style="padding-top: 10px;margin-left: 1%;width:60%;display:none;" id="pager">
+			<button class="billquery" id="billshouye" style="cursor: pointer;">首页</button>
+			<button class="billquery" id="billfront" style="cursor: pointer;">上一页</button>
+			<button class="billquery" id="billnext" style="cursor: pointer;">下一页</button>
+			<button class="billquery" id="billweiye" style="cursor: pointer;">尾页</button>
+			&nbsp;
+			<label class="billdangqian"></label>
+			<label class="billgong"></label>
+			<label class="billNum"></label>
+		</div>	
+  		<div style="display: none;">
+			<input type="text" id="billcountPage" value="15"></input>
+			<input type="text" id="billcurrentPage" value="1"></input>
+		</div>
+  </div>
+</body>
+<script type="text/javascript">
+//加载页面分页显示
+$(function(){
+	billListPager();
+});
+
+//分页显示月结清单
+function billListPager(){
+	//点击月结清单按钮，显示分页pager
+	$("#pager").show();
+	//alert("进入月结清单界面");
+	var ajaxdata = {currentPage:$("#billcurrentPage").val()};
+	var billList = "";
+	var billTitle = "<tr style='background-color:grey;color:white;'><td>运单号</td><td>计费重量</td><td>产品类型</td><td>费用</td><td>折扣</td><td>目的地</td></tr>";
+	//拼接table
+	$.ajax({
+		url:"/monthBillList",
+		type:"post",
+		data:ajaxdata,
+		success: function(result){
+			$("#billcountPage").val(result[0].billcountPage);
+			$("#billcurrentPage").val(result[0].billcurrentPage);
+			//console.log(result[0].billcountPage+"--"+result[0].billcurrentPage);
+			$.each(result[0].data, function (i, n)
+		    {
+				billList = billList+"<tr><td>"+n.billno+"</td><td>"+n.chargedweight+"</td><td>"+n.producttype+"</td><td>"+n.price+"</td><td>"+n.discount+"</td><td>"+n.destination+"</td></tr>";
+		    	//console.log(n.billno+"--"+n.chargedweight+"--"+n.producttype+"--"+n.price+"--"+n.discount+"--"+n.destination);		
+		    });
+			billList = billTitle+billList;
+			$(".tableContent").html(billList);
+      		$(".billdangqian").html("当前第:"+result[0].billcurrentPage+"页");
+      		$(".billgong").html("共:"+result[0].billcountPage+"页");
+      		$(".billNum").html("共:"+result[0].billNum+"条记录");
+		}
+	});
+}
+
+//首页、上一页、下一页、尾页 
+$(".billquery").click(function(){
+	//alert($(this).attr("id"));
+	if($(this).attr("id")=="billshouye"){
+		$("#billcurrentPage").val(1);
+	}else if($(this).attr("id")=="billweiye"){
+		$("#billcurrentPage").val($("#billcountPage").val());
+	}else if($(this).attr("id")=="billfront"){
+		var ye = parseInt($("#billcurrentPage").val())-1;
+		if(ye-1<0){
+			alert("已经是第一页");
+			return false;
+		}
+		$("#billcurrentPage").val(ye);
+	}else if($(this).attr("id")=="billnext"){
+		var ye = parseInt($("#billcurrentPage").val())+1;
+		var count = parseInt($("#billcountPage").val());
+		if(ye>count){
+			alert("已经是最后一页");
+			return false;
+		}
+		$("#billcurrentPage").val(ye);
+	}
+	billListPager();
+}); 
+
+//检查上传文件名是否为空
+function check(){
+	var name = $("#file").val();
+	if(name==""){
+		alert("请先选择文件再导入~~");
+		return false;
+	}else{
+		$("#inserting").text("数据导入，并进行重量平衡，请稍后。。。");
+		return true;
+	}
+}
+
+//清除表中数据clear
+$(".clear").click(function(){
+	$.ajax({
+		url:"/clearData",
+		type:"post",
+		async: false,
+		success: function(data){
+			window.location.reload();
+		}
+	});
+});
+</script>
+</html>

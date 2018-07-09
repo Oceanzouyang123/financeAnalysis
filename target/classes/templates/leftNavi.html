@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>导航</title>
+<meta name="keywords" content="侧边导航菜单(可分组折叠)">
+<meta name="description" content="侧边导航菜单(可分组折叠)" />
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+<!--link rel="stylesheet" href="/css/bootstrap.min.css" /-->
+</head>
+<body>
+
+<script src="/js/jquery-3.1.0.min.js"></script>
+<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+        $(function(){
+            $(".panel-heading").click(function(e){
+                /*切换折叠指示图标*/
+                $(this).find("span").toggleClass("glyphicon-chevron-down");
+                $(this).find("span").toggleClass("glyphicon-chevron-up");
+            });
+        });
+        </script>        
+</body>
+</html>

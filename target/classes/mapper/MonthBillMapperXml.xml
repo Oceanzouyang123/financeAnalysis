@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的 -->
+<mapper namespace="com.bootstrap.mybatis.MonthBillMybatisDao">
+    <!-- 创建表 >
+    <update id="createTable" parameterType="String">
+        create table ${tableName} (id int primary key auto_increment,name varchar(20),age int)
+    </update-->
+    
+    <!-- 添加数据 -->
+    <insert id="add" parameterType="com.bootstrap.entity.Monthbill">
+        insert into monthbill(billno,chargedweight) value(#{billno},#{chargedweight})
+    </insert>
+    
+    <!-- 根据id删除数据 -->
+    <delete id="del" parameterType="int">
+        delete from monthbill where id = #{id}
+    </delete>
+    
+    <!-- 删除所有数据  -->
+     <delete id="delall">
+        delete from monthbill
+    </delete>
+    
+    <!-- 修改数据 -->
+    <update id="update" parameterType="com.bootstrap.entity.Monthbill">
+        update monthbill set billno=#{billno},chargedweight=#{chargedweight} where id=#{id}
+    </update>
+    
+    <!--根据id查询得到一个Monthbill对象getMonthbill -->
+    <select id="getMonthbill" parameterType="int" 
+        resultType="com.bootstrap.entity.Monthbill">
+        select * from monthbill where id=#{id}
+    </select>
+    
+    <!-- 计算有多少记录  -->
+    <select id="getCountSqlwhere" parameterType="com.bootstrap.entity.Monthbill" resultType="int">
+    	select count(*) from monthbill where 1=1
+    	<if test="billno != null and billno !=''">        	
+        	and billno = #{billno}
+        </if>
+        <if test="producttype != null and producttype !=''">        	
+        	and producttype = #{producttype}
+        </if>
+        <if test="destination != null and destination !=''">        	
+        	and destination = #{destination}
+        </if>
+    </select>
+    
+    <!-- 查询所有的数据 -->
+    <select id="getMonthbillList" resultType="com.bootstrap.entity.Monthbill">
+        select id,billno,chargedweight,producttype,price,discount,destination from monthbill       
+    </select>
+    
+    <!-- 批量插入 -->
+    <insert id="insertBatch">
+    	INSERT INTO monthbill(billno,chargedweight,producttype,price,discount,destination,titledate,customername,increment)VALUES
+    	<foreach collection ="list" item="Monthbill" separator =",">
+         	(#{Monthbill.billno},#{Monthbill.chargedweight},#{Monthbill.producttype},#{Monthbill.price},#{Monthbill.discount},#{Monthbill.destination},#{Monthbill.titledate},#{Monthbill.customername},#{Monthbill.increment})
+    	</foreach >
+	</insert>
+	
+	<!-- 目的地组别  -->
+	<select id="getDestination" resultType="com.bootstrap.entity.Monthbill">
+		select DISTINCT(destination) from monthbill
+	</select>	
+	
+	<!-- 分页  -->
+	<select id="getMonthbillPager" resultType="com.bootstrap.entity.Monthbill">
+        select id,billno,chargedweight,producttype,price,discount,destination from monthbill where id >= (select id FROM Monthbill ORDER BY id LIMIT #{0}, 1) LIMIT #{1}       
+    </select>
+	
+	<!-- 分页+判断条件  -->
+	<select id="getMonthbillPagerContent" resultType="com.bootstrap.entity.Monthbill">
+        select id,billno,chargedweight,producttype,price,discount,destination from monthbill where 
+        <if test="billno != null and billno !=''">        	
+        	billno = #{billno} and
+        </if> 
+        <if test="producttype != null and producttype !=''">        	
+        	producttype = #{producttype} and
+        </if>
+        <if test="destination != null and destination !=''">        	
+        	destination = #{destination} and
+        </if>
+        id>= (select id FROM monthbill ORDER BY id LIMIT #{rowStart}, 1) LIMIT #{pageSize}       
+    </select>
+	
+	<!-- 判断条件搜索  -->
+	<select id="getMonthbillSqlWhere" resultType="com.bootstrap.entity.Monthbill">
+        select id,billno,chargedweight,producttype,price,discount,destination from monthbill       
+        	where 1=1
+        <if test="billno != null and billno !=''">        	
+        	and billno = #{billno}	
+        </if>  
+        <if test="producttype != null and producttype !=''">
+        	and producttype = #{producttype}	
+        </if>       
+    </select>
+    
+    <!-- 根据地名获取距离  -->
+    <select id="getRange" resultType="com.bootstrap.entity.Destination">
+    	select dis from destination where name like #{name}
+    </select>
+    
+    <!-- 统计计费重量、票数、费用和折扣的总和  -->
+    <select id="getTotal" resultType="com.bootstrap.entity.Monthbill">
+    	select count(DISTINCT billno) as billno, cast(sum(price) AS DECIMAL (19, 2))as price, cast(sum(chargedweight) AS DECIMAL (19, 3)) as chargedweight, cast(sum(discount) AS DECIMAL (19, 2)) as discount from monthbill
+    </select>
+    
+    <!-- 复制数据到表monthbillbak -->
+    <insert id="insertMonthbillbak">
+    	insert into monthbillbak(billno,chargedweight,producttype,price,discount,destination,titledate,customername,increment,city) 
+    	select billno,chargedweight,producttype,price,discount,destination,titledate,customername,increment,city FROM monthbill;
+    </insert>
+	
+</mapper>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title></title>
+<script th:src="@{/js/jquery-3.1.0.min.js}"></script>
+<!--script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"-->
+<style type="text/css"> 
+	body{
+		margin: 0px;
+		padding: 0px;
+	} 
+    .navbar{
+    	background-color: grey; 	
+    } 
+    .panel-title{
+    	cursor: pointer;
+    }
+    #downloadResult {
+    	background-color: rgba(157, 157, 157, 0.79);
+    	border: none;
+    	color: white;
+    	padding: 4px 15px;
+    	text-align: center;
+    	text-decoration: none;
+    	font-size: 16px;
+    	margin: 4px 2px;
+    	cursor: pointer;
+    	border-radius: 12px;
+	}
+</style>
+</head>
+<body>
+	<!-- 引入head页面 -->
+	<div th:include="MonthBill/head :: headContent"></div>
+	<div class="tab-content" style="margin-left: 20%;">
+		<!--input type="button" value="分析" style="display: none;" id="<input type="submit" id="btn" value="导入excel">" onclick="analyzeAgain();"></input-->
+		<table style="margin-left: 10%;width: 20%;">
+			<tr>
+				<td>
+					<p style="font-size: 30px;display: none;" id="resultTitle">统计结果</p>
+				</td>
+				<td>
+					<input type="button" value="下载" style="display: none;" id="downloadResult" onclick="downloadResult();"></input>
+				</td>
+			</tr>
+		</table>
+		<label id="ana" style="display: none;">数据分析中。。。</label>
+	</div>
+</body>
+<script type="text/javascript">
+//加载页面进行统计分析
+$(function(){
+	analyzeResult();
+});
+
+//分析统计结果
+function analyzeResult(){
+	$("#downloadResult").hide();
+	$("#resultTitle").hide();
+	$("#ana").show();
+	$.ajax({
+		url:"/analyze",
+		type:"post",
+		success: function(result){
+			//alert("获取分析结果~~");
+			var billResult = "";
+			var billTitle = "<tr style='background-color:grey;color:white;'><td>产品类型</td><td>目的地</td><td>计费重量</td><td>票数</td><td>单票重量</td><td>费用</td><td>增值费用</td><td>折扣</td><td>折扣率</td><td>距离</td></tr>";
+			$.each(result[0].data, function (i, n)
+		    {
+				if(n.producttype=="合计"){
+					billResult = billResult+"<tr><td colspan='2' align='center'>"+n.producttype+"</td><td>"+n.chargedweight+"</td><td>"+n.billno+"</td><td>"+n.eachweight+"</td><td>"+n.price+"</td><td>"+n.incrementprice+"</td><td>"+n.discount+"</td><td>"+n.prediscount+"</td><td>"+n.distance+"</td></tr>";
+				}else{
+					billResult = billResult+"<tr><td>"+n.producttype+"</td><td>"+n.destination+"</td><td>"+n.chargedweight+"</td><td>"+n.billno+"</td><td>"+n.eachweight+"</td><td>"+n.price+"</td><td>"+n.incrementprice+"</td><td>"+n.discount+"</td><td>"+n.prediscount+"</td><td>"+n.distance+"</td></tr>";
+				}		
+		    	//console.log(n.producttype+"--"+n.destination+"--"+n.chargedweight+"--"+n.price+"--"+n.discount+"-- 次数"+i);		
+		    });
+			billResult = billTitle + billResult;
+			$(".tab-content").html($(".tab-content").html()+"<table style='width:60%;border-collapse:collapse;' border='1'>"+billResult+"</table>");
+			$("#downloadResult").show();
+			$("#resultTitle").show();
+			$("#ana").hide();
+		}
+	});
+}
+
+//下载统计结果
+function downloadResult(){
+	var url = "/downloadResult";
+	window.open(url);
+}
+</script>
+</html>

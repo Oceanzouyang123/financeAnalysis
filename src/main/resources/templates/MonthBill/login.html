@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<!--link rel="stylesheet" th:href="@{/resources/css/jquery.ui.customer.css}" /-->
+<script th:src="@{/js/jquery-3.1.0.min.js}"></script>
+<style type="text/css"> 
+	body{
+		background-image: url("/images/bg.png");
+		background-repeat:repeat-y; background-attachment:fixed;
+	}
+	#login{ 
+		position:fixed;
+		left:30%;
+		top:25%;
+		margin-left:width/2;
+		margin-top:height/2;
+		/* border:1px solid #000; */
+		width:400px;
+		height: 300px;
+	} 
+	#param{
+		width:350px;
+		margin-left: 1px;
+		margin-top: 50px;
+	}
+	#logo{
+		
+	}
+	.input-text {
+		PADDING: 10px;
+		LINE-HEIGHT: 20px;
+		OUTLINE-STYLE: none;
+		OUTLINE-COLOR: invert;
+		OUTLINE-WIDTH: 0px;
+		WIDTH: 307px;
+		HEIGHT: 20px;
+		COLOR: #333;
+		VERTICAL-ALIGN: middle;
+		OVERFLOW: hidden;
+		margin-top:5px;
+		border:1px solid #ccc;
+		border-radius:5px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+	}
+	#btn {
+		background: gray;
+		border: none;
+		border-radius: 5px;
+		width: 327px;
+		height: 50px;
+		line-height: 50px;
+		outline: none;
+		cursor: pointer;
+		color: #fff;
+		font: 22px "Microsoft YaHei", Arial, Helvetica, sans-serif;
+	}
+</style> 
+</head>
+<body>
+	<div id="login">
+		<div id="logo">
+			<img th:src="@{/images/sfLogo.png}" width="50px" height="50px"></img>
+			<!--img src="/images/sfLogo.png" style="width: 50px;height: 50px;"></img-->
+			<label style="margin-left: 20px;font-size: 30px;">月结清单系统</label>
+		</div>
+		<div id="param">
+			<table>
+				<tr>
+					<td>
+						<label>用&nbsp;&nbsp;户&nbsp;&nbsp;名</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" id="name" class="input-text"></input>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+				</tr>
+				<tr>
+					<td>
+						<label>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="password" id="pwd" class="input-text"></input>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+				</tr>
+				<tr>
+					<td>
+						<label style="font-size: 18px;color: red;display: none;" id="loginFail">用户名或密码错误，请重新输入~~</label>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+				</tr>
+				<tr>
+					<td>
+						<input type="button" id="btn" value="登录"></input>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	//回车登陆
+	$(function(){ 
+		document.onkeydown = function(e){ 
+			var ev = document.all ? window.event : e; 
+			if(ev.keyCode==13) { 
+				$("#btn").click();
+			} 
+		} 
+	});
+	$("#btn").click(function(){
+		//登录
+		$.ajax({
+			url:"/checkUser",
+			data:{username:$("#name").val(),pwd:$("#pwd").val()},
+			type:"post",
+			success: function(result){
+				if(result==1){
+					location.href="/billListHtml";
+				}else{
+					$("#loginFail").show();
+					$("#name").val("");
+					$("#pwd").val(""); 
+					$("#name").focus();
+				}
+			}
+		});
+	});
+</script>
+</html>

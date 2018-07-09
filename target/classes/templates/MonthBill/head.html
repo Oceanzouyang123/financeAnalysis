@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title></title>
+<script th:src="@{/js/jquery-3.1.0.min.js}"></script>
+<style type="text/css">  
+    .navbar{
+    	background-color: grey; 	
+    } 
+    .panel-title{
+    	cursor: pointer;
+    }
+</style>
+</head>
+<header th:fragment="headContent">
+<body>
+<div class="navbar" style="width: 100%;">
+	<table style="margin-left: 19%;">
+		<tr>
+			<td>
+				<img th:src="@{/images/sfLogo.png}" style="width: 50px;height: 50px;"></img>
+			</td>
+			<td>
+				<a class="" style="color: white;">顺丰常州地区月结清单</a>
+			</td>
+			<td></td>
+			<td></td>
+			<td>
+				<a style="color: white;cursor: pointer;" id="monthBillList">月结清单列表</a>
+			</td>
+			<td></td>
+			<td></td>
+			<td>
+				<a style="color: white;cursor: pointer;" id="analyze">统计分析</a>
+			</td>
+			<td></td>
+			<td></td>
+			<td>
+				<a style="color: white;" id="loginUser"></a>
+			</td>
+			<td>
+				<a href="" style="color: white;cursor: pointer;" id="loginOut">退出</a>
+			</td>
+		</tr>
+	</table>
+  </div>
+</body>
+<script type="text/javascript">
+//获取登录信息
+$(function(){
+	$.ajax({
+		url:"/getUser",
+		type:"post",
+		success: function(result){
+			if(result==""){
+				location.href="/login";
+			}else{
+				$("#loginUser").text("当前用户:"+result);
+			}
+		}
+	});
+});
+
+//退出
+$("#loginOut").click(function(){
+	$.ajax({
+		url:"loginOut",
+		type:"post",
+		success: function(){
+			location.href="/login";
+		}
+	});
+});
+
+//分页列表
+$("#monthBillList").click(function(){		
+	location.href="/billListHtml";
+});
+
+//统计分析
+$("#analyze").click(function(){
+	//alert("进入统计分析页面");
+	location.href="/analyzeHtml";
+});
+</script>
+</header>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>导航</title>
+<meta name="keywords" content="侧边导航菜单(可分组折叠)">
+<meta name="description" content="侧边导航菜单(可分组折叠)" />
+<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+<style type="text/css">    
+    body{
+      padding-top: 50px;
+/*       overflow:scroll;
+	  overflow-x:hidden;
+	  overflow-y:hidden; */
+    }    
+    .navbar{
+    	background-color: grey; 	
+    } 
+    .panel-title{
+    	cursor: pointer;
+    }
+    
+    </style>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+    	<img src="/images/sfLogo.png" style="position: absolute;margin-left: -5%;width: 50px;height: 50px;"></img>
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>        
+        <a class="navbar-brand" style="color: white;">顺丰常州地区月结清单</a>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+          	<a href="#" class="dropdown-toggle" style="color: white;" id="monthBillList">月结清单列表</a>
+          </li>
+          <li>
+          	<a href="#" class="dropdown-toggle" style="color: white;" id="analyze">统计分析</a>
+          </li>
+      	</ul>	
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+  <div class="tab-content" style="position: absolute;margin-left: 30%;">
+  	<p style="font-size: 30px;margin-left: 25%;margin-top: 10px;width: 200px;" id="billTitle"></p>
+  		<table style="display: block;margin-top: 10%;" class="table">
+  		</table>
+  		<!-- 月结算清单分页列表 -->
+  		<div style="padding-top: 10px;margin-left: 10%;width:600px;display:none;" id="pager">
+			<label class="billquery" id="billshouye" style="cursor: pointer;">首页</label>
+			<label class="billquery" id="billfront" style="cursor: pointer;">上一页</label>
+			<label class="billquery" id="billnext" style="cursor: pointer;">下一页</label>
+			<label class="billquery" id="billweiye" style="cursor: pointer;">尾页</label>
+			&nbsp;&nbsp;
+			<label class="billdangqian"></label>
+			<label class="billgong"></label>
+		</div>	
+  		<div style="display: none;">
+			<input type="text" id="billcountPage" value="15"></input>
+			<input type="text" id="billcurrentPage" value="1"></input>
+		</div>
+  </div>
+</body>
+<!--script src="/js/jquery-3.1.0.min.js"></script>
+<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+< script src="js/bootstrap.min.js"></script-->
+<script type="text/javascript">
+	$(function(){
+    	$(".panel-heading").click(function(e){
+        	/*切换折叠指示图标*/
+        	$(this).find("span").toggleClass("glyphicon-chevron-down");
+        	$(this).find("span").toggleClass("glyphicon-chevron-up");
+    	});
+	});
+	
+	$(function () { 
+		$("[data-toggle='popover']").popover();
+	});
+	
+	$("#monthBillList").click(function(){		
+		location.href="/billListHtml";
+	});
+	
+	//统计分析
+	$("#analyze").click(function(){
+		//alert("进入统计分析页面");
+		location.href="/analyzeHtml";
+	});
+	
+</script>
+</html>

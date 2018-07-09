@@ -1,0 +1,119 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insert title here</title>
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+<!--link href="/css/bootstrap.min.css" rel="stylesheet" /-->
+<style type="text/css">    
+    body{
+      padding-top: 50px;
+    }    
+    .navbar-inverse{
+    	background-color: #373277;
+    } 
+    </style>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse ">
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#" style="color: white;">测试数据</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="#">导航1 <span class="sr-only">(current)</span></a></li>
+          <li><a href="#">导航2</a></li>
+          <li class="dropdown">
+          	<a href="#" class="dropdown-toggle" data-toggle="dropdown">导航3</a>
+          	<ul class="dropdown-menu">
+                  <li><a href="#">导航3-1</a></li>
+                  <li><a href="#">导航3-2</a></li>
+                  <li><a href="#">导航3-3</a></li>
+                  <li><a href="#">导航3-4</a></li>
+          	</ul>
+          </li>
+          <li><a href="#">关于</a></li> 
+      	</ul>	
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+  <button type="button" class="btn btn-success" title="Popover title"  
+			data-container="body" data-toggle="popover" data-placement="bottom" 
+			data-content="底部的 Popover 中的一些内容">
+		底部的 Popover
+  </button>
+	<br/>
+		<table>
+			<tr>
+				<td>姓名:</td>
+				<td>
+					<input class="name" type="text"></input>
+				</td>
+			</tr>
+			<tr>
+				<td>年龄:</td>
+				<td>
+					<input class="age" type="text"></input>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input class="sub" type="button" value="确认"></input>
+				</td>
+			</tr>
+		</table>
+		<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid"> 
+	<div class="navbar-header">
+		<a class="navbar-brand" href="#">导航测试</a>
+	</div>
+	<div>
+		<ul class="nav navbar-nav">
+			<li class="active"><a href="#">iOS</a></li>
+			<li><a href="#">SVN</a></li>
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					Java 
+					<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="#">jmeter</a></li>
+					<li><a href="#">EJB</a></li>
+					<li><a href="#">Jasper Report</a></li>
+					<li class="divider"></li>
+					<li><a href="#">分离的链接</a></li>
+					<li class="divider"></li>
+					<li><a href="#">另一个分离的链接</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	</div>
+</nav>
+		
+</body>
+<script src="/js/jquery-3.1.0.min.js"></script>
+<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- script src="js/bootstrap.min.js"></script-->
+<script type="text/javascript">
+	$(".sub").click(function(){
+		//alert($(".name").val());
+		console.log($(".age").val());
+		location.href="bootstrapLocation";
+	});
+	$(function () { 
+		$("[data-toggle='popover']").popover();
+	});
+</script>
+</html>
